@@ -356,54 +356,34 @@ public class DownloadTask implements Runnable {
         progress.speed = 0;
         progress.status = Progress.NONE;
         updateDatabase(progress);
-        HttpUtils.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                for (DownloadListener listener : listeners.values()) {
-                    listener.onStart(progress);
-                }
-            }
-        });
+        for (DownloadListener listener : listeners.values()) {
+            listener.onStart(progress);
+        }
     }
 
     private void postWaiting(final Progress progress) {
         progress.speed = 0;
         progress.status = Progress.WAITING;
         updateDatabase(progress);
-        HttpUtils.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                for (DownloadListener listener : listeners.values()) {
-                    listener.onProgress(progress);
-                }
-            }
-        });
+        for (DownloadListener listener : listeners.values()) {
+            listener.onProgress(progress);
+        }
     }
 
     private void postPause(final Progress progress) {
         progress.speed = 0;
         progress.status = Progress.PAUSE;
         updateDatabase(progress);
-        HttpUtils.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                for (DownloadListener listener : listeners.values()) {
-                    listener.onProgress(progress);
-                }
-            }
-        });
+        for (DownloadListener listener : listeners.values()) {
+            listener.onProgress(progress);
+        }
     }
 
     private void postLoading(final Progress progress) {
         updateDatabase(progress);
-        HttpUtils.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                for (DownloadListener listener : listeners.values()) {
-                    listener.onProgress(progress);
-                }
-            }
-        });
+        for (DownloadListener listener : listeners.values()) {
+            listener.onProgress(progress);
+        }
     }
 
     private void postOnError(final Progress progress, final Throwable throwable) {
@@ -411,15 +391,10 @@ public class DownloadTask implements Runnable {
         progress.status = Progress.ERROR;
         progress.exception = throwable;
         updateDatabase(progress);
-        HttpUtils.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                for (DownloadListener listener : listeners.values()) {
-                    listener.onProgress(progress);
-                    listener.onError(progress);
-                }
-            }
-        });
+        for (DownloadListener listener : listeners.values()) {
+            listener.onProgress(progress);
+            listener.onError(progress);
+        }
     }
 
     private void postOnFinish(final Progress progress, final File file) {
@@ -427,28 +402,18 @@ public class DownloadTask implements Runnable {
         progress.fraction = 1.0f;
         progress.status = Progress.FINISH;
         updateDatabase(progress);
-        HttpUtils.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                for (DownloadListener listener : listeners.values()) {
-                    listener.onProgress(progress);
-                    listener.onFinish(file, progress);
-                }
-            }
-        });
+        for (DownloadListener listener : listeners.values()) {
+            listener.onProgress(progress);
+            listener.onFinish(file, progress);
+        }
     }
 
     private void postOnRemove(final Progress progress) {
         updateDatabase(progress);
-        HttpUtils.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                for (DownloadListener listener : listeners.values()) {
-                    listener.onRemove(progress);
-                }
-                listeners.clear();
-            }
-        });
+        for (DownloadListener listener : listeners.values()) {
+            listener.onRemove(progress);
+        }
+        listeners.clear();
     }
 
     private void updateDatabase(Progress progress) {
